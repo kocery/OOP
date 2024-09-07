@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
- * Unit tests for the HeapSort class
+ * Unit tests for the HeapSort class.
  */
 public class HeapSortTest {
 
     /**
-     * Tests HeapSort with an array of integers
+     * Tests HeapSort with an array of integers.
      */
     @Test
     public void testHeapSort() {
@@ -22,7 +22,7 @@ public class HeapSortTest {
     }
 
     /**
-     * Tests HeapSort with an already sorted array
+     * Tests HeapSort with an already sorted array.
      */
     @Test
     public void testHeapSortAlreadySorted() {
@@ -34,7 +34,7 @@ public class HeapSortTest {
     }
 
     /**
-     * Tests HeapSort with an array of identical elements
+     * Tests HeapSort with an array of identical elements.
      */
     @Test
     public void testHeapSortIdenticalElements() {
@@ -46,7 +46,7 @@ public class HeapSortTest {
     }
 
     /**
-     * Tests HeapSort with an empty array
+     * Tests HeapSort with an empty array.
      */
     @Test
     public void testHeapSortEmptyArray() {
@@ -58,7 +58,7 @@ public class HeapSortTest {
     }
 
     /**
-     * Tests HeapSort with an array containing a single element
+     * Tests HeapSort with an array containing a single element.
      */
     @Test
     public void testHeapSortSingleElement() {

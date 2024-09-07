@@ -1,14 +1,14 @@
 package ru.nsu;
 
 /**
- * A class that implements the Heap Sort algorithm
+ * A class that implements the Heap Sort algorithm.
  */
 public class HeapSort {
 
     /**
-     * Performs Heap Sort on the provided array
+     * Performs Heap Sort on the provided array.
      *
-     * @param array The array to be sorted
+     * @param array The array to be sorted.
      */
     public static void heapSort(int[] array) {
         int n = array.length;
@@ -27,11 +27,11 @@ public class HeapSort {
     }
 
     /**
-     * Heapifies a subtree rooted with node i which is an index in array[]
+     * Heapifies a subtree rooted with node i which is an index in array[].
      *
-     * @param array     The array representing the heap
-     * @param heapSize  The size of the heap
-     * @param rootIndex The index of the root of the subtree to be heapified
+     * @param array     The array representing the heap.
+     * @param heapSize  The size of the heap.
+     * @param rootIndex The index of the root of the subtree to be heapified.
      */
     private static void heapify(int[] array, int heapSize, int rootIndex) {
         int largest = rootIndex;
