@@ -26,7 +26,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("blackjack.Main")
+    mainClass.set("blackjack.Blackjack")
 }
 
 tasks.named<Test>("test") {

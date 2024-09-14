@@ -13,8 +13,6 @@ public class Blackjack {
      * Starts and manages a single round of Blackjack.
      */
     public void playRound() {
-        Player player = new Player();
-        Dealer dealer = new Dealer();
         System.out.println("Раунд: " + round);
         Scanner scanner = new Scanner(System.in);
 
@@ -22,8 +20,12 @@ public class Blackjack {
         System.out.println("Дилер раздал карты");
 
 	Deck deck = new Deck();
+
+        Player player = new Player();
         player.addCard(deck.dealCard());
         player.addCard(deck.dealCard());
+
+	Dealer dealer = new Dealer();
         dealer.addCard(deck.dealCard());
         dealer.addCard(deck.dealCard());
 
