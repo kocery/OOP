@@ -3,15 +3,7 @@ package blackjack;
 /**
  * The {@code Card} class represents a single playing card in a game of Blackjack.
  */
-public class Card() {
-
-    private String suit;
-    private String rank;
-    
-    public Card(String suit, String rank) {
-        this.suit = suit;
-	this.rank = rank;
-    }
+public record Card(String suit, String rank) {
     /**
      * Returns the numeric value of the card according to Blackjack rules.
      *
