@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DealerTest {
 
-   @Test
+    @Test
     void testAddCardIncreasesHandSize() {
         Dealer dealer = new Dealer();
         Card card = new Card("Пики", "7");
