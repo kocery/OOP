@@ -19,13 +19,13 @@ public class Blackjack {
         System.out.println("Добро пожаловать в Блекджек!");
         System.out.println("Дилер раздал карты");
 
-	Deck deck = new Deck();
+        Deck deck = new Deck();
 
         Player player = new Player();
         player.addCard(deck.dealCard());
         player.addCard(deck.dealCard());
 
-	Dealer dealer = new Dealer();
+        Dealer dealer = new Dealer();
         dealer.addCard(deck.dealCard());
         dealer.addCard(deck.dealCard());
 

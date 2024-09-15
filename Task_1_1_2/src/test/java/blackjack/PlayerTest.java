@@ -1,7 +1,6 @@
 package blackjack;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -30,6 +29,15 @@ class PlayerTest {
         player.addCard(new Card("Червы", "9"));
         player.addCard(new Card("Бубы", "5"));
         assertEquals(14, player.getScore());
+    }
+
+    @Test
+    void testGetScoreWithAceAdjustment() {
+        Player player = new Player();
+        player.addCard(new Card("Трефы", "Туз"));
+        player.addCard(new Card("Пики", "9"));
+        player.addCard(new Card("Бубы", "5"));
+        assertEquals(15, player.getScore());
     }
 
     @Test

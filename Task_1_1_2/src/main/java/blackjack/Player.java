@@ -1,6 +1,5 @@
 package blackjack;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ public class Player {
      */
     public int getScore() {
         int score = hand.stream().mapToInt(Card::getValue).sum();
-        long aceNum = hand.stream().filter(card -> card.rank().equals("A")).count();
+        long aceNum = hand.stream().filter(card -> card.rank().equals("Туз")).count();
 
         while (score > 21 && aceNum > 0) {
             score -= 10;

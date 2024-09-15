@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.util.LinkedList;
 import org.junit.jupiter.api.Test;
 
 class DeckTest {
@@ -25,9 +26,8 @@ class DeckTest {
     @Test
     void testShuffleChangesOrder() {
         Deck deck = new Deck();
-        String initialOrder = deck.getCards().toString();
+        LinkedList<Card> initialOrder = new LinkedList<>(deck.getCards());
         deck.shuffle();
-        String shuffledOrder = deck.getCards().toString();
-        assertNotEquals(initialOrder, shuffledOrder);
+        assertNotEquals(initialOrder, deck.getCards());
     }
 }
