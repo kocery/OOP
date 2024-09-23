@@ -10,6 +10,10 @@ import java.util.LinkedList;
  */
 public class Deck {
 
+    private static final String[] SUITS = {"Червы", "Трефы", "Бубы", "Пики"};
+    private static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Дама",
+        "Валет", "Король", "Туз"};
+
     private final LinkedList<Card> cards = new LinkedList<>();
 
     /**
@@ -19,12 +23,9 @@ public class Deck {
      * </p>
      */
     public Deck() {
-        String[] suits = {"Червы", "Трефы", "Бубы", "Пики"};
-        String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10",
-            "Дама", "Валет", "Король", "Туз"};
 
-        for (String suit : suits) {
-            for (String rank : ranks) {
+        for (String suit : SUITS) {
+            for (String rank : RANKS) {
                 cards.add(new Card(suit, rank));
             }
         }

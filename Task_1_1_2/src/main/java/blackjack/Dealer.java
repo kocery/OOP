@@ -10,7 +10,7 @@ public class Dealer extends Player {
      * Displays the dealer's first card.
      */
     public void showFirstCard() {
-        System.out.println("Карты дилера: [" + hand.getFirst() + "<закрытая карта>" + "]");
+        System.out.println("Карты дилера: [" + hand.getFirst() + ", <закрытая карта>" + "]");
     }
 
     /**
