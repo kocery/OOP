@@ -9,6 +9,12 @@ import java.util.Scanner;
  */
 public class Blackjack {
 
+    private static final String DEALERWIN = "Дилер победил!";
+    private static final String PLAYERWIN = "Вы победили!";
+    private static final String DRAW = "Кажется, это ничья!";
+    private static final String INCORRECTINPUT = "Неккоректный ввод, введите 1 или 0.";
+    private static final String ENDGAME = "Спасибо за игру!";
+
     private int round = 1;
     private final List<String> gameLog = new ArrayList<>();
 
@@ -30,14 +36,14 @@ public class Blackjack {
 
                 if (action.equals("0")) {
                     playAgain = false;
-                    gameLog.add("Спасибо за игру!");
-                    System.out.println("Спасибо за игру!");
+                    gameLog.add(ENDGAME);
+                    System.out.println(ENDGAME);
                     break;
                 } else if (action.equals("1")) {
                     break;
                 } else {
-                    gameLog.add("Неккоректный ввод, введите 1 или 0.");
-                    System.out.println("Неккоректный ввод, введите 1 или 0.");
+                    gameLog.add(INCORRECTINPUT);
+                    System.out.println(INCORRECTINPUT);
                 }
             }
         }
@@ -71,15 +77,15 @@ public class Blackjack {
                 player.showHand();
 
                 if (player.getScore() > 21) {
-                    gameLog.add("Дилер победил!");
-                    System.out.println("Дилер победил!");
+                    gameLog.add(DEALERWIN);
+                    System.out.println(DEALERWIN);
                     return;
                 }
             } else if (action.equals("0")) {
                 break;
             } else {
-                gameLog.add("Неккоректный ввод, введите 1 или 0.");
-                System.out.println("Неккоректный ввод, введите 1 или 0.");
+                gameLog.add(INCORRECTINPUT);
+                System.out.println(INCORRECTINPUT);
             }
         }
 
@@ -92,18 +98,18 @@ public class Blackjack {
 
         dealer.showAllCards();
         if (dealer.getScore() > 21) {
-            gameLog.add("Дилер проиграл! На этот раз вы победили!");
-            System.out.println("Дилер проиграл! На этот раз вы победили!");
+            gameLog.add(PLAYERWIN);
+            System.out.println(PLAYERWIN);
         } else {
             if (dealer.getScore() > player.getScore()) {
-                gameLog.add("Дилер победил!");
-                System.out.println("Дилер победил!");
+                gameLog.add(DEALERWIN);
+                System.out.println(DEALERWIN);
             } else if (dealer.getScore() < player.getScore()) {
-                gameLog.add("Вы победили!");
-                System.out.println("Вы победили!");
+                gameLog.add(PLAYERWIN);
+                System.out.println(PLAYERWIN);
             } else {
-                gameLog.add("Кажется, это ничья!");
-                System.out.println("Кажется, это ничья!");
+                gameLog.add(DRAW);
+                System.out.println(DRAW);
             }
         }
     }
