@@ -48,7 +48,7 @@ loadScripts(document, 'script');</script>
 <div class="header">
 <h1>Index</h1>
 </div>
-<a href="#I:A">A</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a>
+<a href="#I:A">A</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a>
 <h2 class="title" id="I:A">A</h2>
 <dl class="index">
 <dt><a href="mathexp/Add.html" class="type-name-link" title="class in mathexp">Add</a> - Class in <a href="mathexp/package-summary.html">mathexp</a></dt>
@@ -105,6 +105,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:E">E</h2>
 <dl class="index">
+<dt><a href="mathexp/Variable.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in class mathexp.<a href="mathexp/Variable.html" title="class in mathexp">Variable</a></dt>
+<dd>
+<div class="block">Compares this variable with another object for equality.</div>
+</dd>
 <dt><a href="mathexp/Expression.html#eval(java.lang.String)" class="member-name-link">eval(String)</a> - Method in class mathexp.<a href="mathexp/Expression.html" title="class in mathexp">Expression</a></dt>
 <dd>
 <div class="block">Evaluates the expression based on a string containing variable assignments.</div>
@@ -147,6 +151,20 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="mathexp/Expression.html#%3Cinit%3E()" class="member-name-link">Expression()</a> - Constructor for class mathexp.<a href="mathexp/Expression.html" title="class in mathexp">Expression</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="mathexp/ExpressionParser.html" class="type-name-link" title="class in mathexp">ExpressionParser</a> - Class in <a href="mathexp/package-summary.html">mathexp</a></dt>
+<dd>
+<div class="block">A class responsible for parsing a string representation of mathematical expressions and creating
+ corresponding <a href="mathexp/Expression.html" title="class in mathexp"><code>Expression</code></a> objects.</div>
+</dd>
+<dt><a href="mathexp/ExpressionParser.html#%3Cinit%3E()" class="member-name-link">ExpressionParser()</a> - Constructor for class mathexp.<a href="mathexp/ExpressionParser.html" title="class in mathexp">ExpressionParser</a></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 class="title" id="I:G">G</h2>
+<dl class="index">
+<dt><a href="mathexp/Number.html#getValue()" class="member-name-link">getValue()</a> - Method in class mathexp.<a href="mathexp/Number.html" title="class in mathexp">Number</a></dt>
+<dd>
+<div class="block">Gets value.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:M">M</h2>
 <dl class="index">
@@ -174,6 +192,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:P">P</h2>
 <dl class="index">
+<dt><a href="mathexp/ExpressionParser.html#parse(java.lang.String)" class="member-name-link">parse(String)</a> - Static method in class mathexp.<a href="mathexp/ExpressionParser.html" title="class in mathexp">ExpressionParser</a></dt>
+<dd>
+<div class="block">Parses a string containing a mathematical expression and returns the corresponding <a href="mathexp/Expression.html" title="class in mathexp"><code>Expression</code></a> object.</div>
+</dd>
 <dt><a href="mathexp/Add.html#print()" class="member-name-link">print()</a> - Method in class mathexp.<a href="mathexp/Add.html" title="class in mathexp">Add</a></dt>
 <dd>
 <div class="block">Prints the addition expression to the standard output.</div>
@@ -205,6 +227,36 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:S">S</h2>
 <dl class="index">
+<dt><a href="mathexp/Expression.html#simplify()" class="member-name-link">simplify()</a> - Method in class mathexp.<a href="mathexp/Expression.html" title="class in mathexp">Expression</a></dt>
+<dd>
+<div class="block">Simplify expression.</div>
+</dd>
+<dt><a href="mathexp/Add.html#simplify_h()" class="member-name-link">simplify_h()</a> - Method in class mathexp.<a href="mathexp/Add.html" title="class in mathexp">Add</a></dt>
+<dd>
+<div class="block">Simplifies Add expression.</div>
+</dd>
+<dt><a href="mathexp/Div.html#simplify_h()" class="member-name-link">simplify_h()</a> - Method in class mathexp.<a href="mathexp/Div.html" title="class in mathexp">Div</a></dt>
+<dd>
+<div class="block">Simplifies Div expression.</div>
+</dd>
+<dt><a href="mathexp/Expression.html#simplify_h()" class="member-name-link">simplify_h()</a> - Method in class mathexp.<a href="mathexp/Expression.html" title="class in mathexp">Expression</a></dt>
+<dd>
+<div class="block">Help-function to simplify expression.</div>
+</dd>
+<dt><a href="mathexp/Mul.html#simplify_h()" class="member-name-link">simplify_h()</a> - Method in class mathexp.<a href="mathexp/Mul.html" title="class in mathexp">Mul</a></dt>
+<dd>
+<div class="block">Simplifies Mul expression.</div>
+</dd>
+<dt><a href="mathexp/Number.html#simplify_h()" class="member-name-link">simplify_h()</a> - Method in class mathexp.<a href="mathexp/Number.html" title="class in mathexp">Number</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="mathexp/Sub.html#simplify_h()" class="member-name-link">simplify_h()</a> - Method in class mathexp.<a href="mathexp/Sub.html" title="class in mathexp">Sub</a></dt>
+<dd>
+<div class="block">Simplifies Sub expression.</div>
+</dd>
+<dt><a href="mathexp/Variable.html#simplify_h()" class="member-name-link">simplify_h()</a> - Method in class mathexp.<a href="mathexp/Variable.html" title="class in mathexp">Variable</a></dt>
+<dd>
+<div class="block">Cannot simplify the variable.</div>
+</dd>
 <dt><a href="mathexp/Sub.html" class="type-name-link" title="class in mathexp">Sub</a> - Class in <a href="mathexp/package-summary.html">mathexp</a></dt>
 <dd>
 <div class="block">Represents the subtraction operation in a mathematical expression.</div>
@@ -256,7 +308,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Constructs a `Variable` expression with the given name.</div>
 </dd>
 </dl>
-<a href="#I:A">A</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a></main>
+<a href="#I:A">A</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a></main>
 </div>
 </div>
 </body>
