@@ -92,7 +92,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">A class responsible for parsing a string representation of mathematical expressions and creating
  corresponding <a href="Expression.html" title="class in mathexp"><code>Expression</code></a> objects.
- <p>
  Example usage:
  <pre><code>
      ExpressionParser parser = new ExpressionParser();
@@ -129,7 +128,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="Expression.html" title="class in mathexp">Expression</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parse(java.lang.String)" class="member-name-link">parse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expression)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Parses a string containing a mathematical expression and returns the corresponding <a href="Expression.html" title="class in mathexp"><code>Expression</code></a> object.</div>
+<div class="block">Parses a string containing a mathematical expression and returns the corresponding
+ <a href="Expression.html" title="class in mathexp"><code>Expression</code></a> object.</div>
 </div>
 </div>
 </div>
@@ -166,8 +166,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="parse(java.lang.String)">
 <h3>parse</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="Expression.html" title="class in mathexp">Expression</a></span>&nbsp;<span class="element-name">parse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expression)</span></div>
-<div class="block">Parses a string containing a mathematical expression and returns the corresponding <a href="Expression.html" title="class in mathexp"><code>Expression</code></a> object.
- The following operations are supported:
+<div class="block">Parses a string containing a mathematical expression and returns the corresponding
+ <a href="Expression.html" title="class in mathexp"><code>Expression</code></a> object. The following operations are supported:
  <ul>
      <li>Addition (+)</li>
      <li>Subtraction (-)</li>
@@ -176,11 +176,12 @@ loadScripts(document, 'script');</script>
      <li>Numeric constants</li>
      <li>Variables</li>
  </ul>
-
+ <p>
  Operations follow standard precedence.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>expression</code> - the string representing the mathematical expression. Example: "(2 + 3) * x".</dd>
+<dd><code>expression</code> - the string representing the mathematical expression. Example: "(2 + 3) *
+                   x".</dd>
 <dt>Returns:</dt>
 <dd>an <a href="Expression.html" title="class in mathexp"><code>Expression</code></a> object representing the parsed expression.</dd>
 <dt>Throws:</dt>
