@@ -6,7 +6,6 @@ import java.util.Stack;
 /**
  * A class responsible for parsing a string representation of mathematical expressions and creating
  * corresponding {@link Expression} objects.
- * <p>
  * Example usage:
  * <pre>{@code
  *     ExpressionParser parser = new ExpressionParser();
@@ -49,8 +48,8 @@ public class ExpressionParser {
     }
 
     /**
-     * Parses a string containing a mathematical expression and returns the corresponding {@link Expression} object.
-     * The following operations are supported:
+     * Parses a string containing a mathematical expression and returns the corresponding
+     * {@link Expression} object. The following operations are supported:
      * <ul>
      *     <li>Addition (+)</li>
      *     <li>Subtraction (-)</li>
@@ -59,10 +58,11 @@ public class ExpressionParser {
      *     <li>Numeric constants</li>
      *     <li>Variables</li>
      * </ul>
-     *
+     * <p>
      * Operations follow standard precedence.
      *
-     * @param expression the string representing the mathematical expression. Example: "(2 + 3) * x".
+     * @param expression the string representing the mathematical expression. Example: "(2 + 3) *
+     *                   x".
      * @return an {@link Expression} object representing the parsed expression.
      * @throws IllegalArgumentException if the expression contains errors or unsupported syntax.
      */
