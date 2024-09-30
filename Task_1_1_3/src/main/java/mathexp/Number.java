@@ -20,6 +20,15 @@ public final class Number extends Expression {
     }
 
     /**
+     * Gets value.
+     *
+     * @return the value.
+     */
+    public int getValue() {
+        return value;
+    }
+
+    /**
      * Evaluates the number, which simply returns its value.
      *
      * @param variables a map containing variable names and their values.
@@ -58,4 +67,10 @@ public final class Number extends Expression {
     protected Expression derivative_h(String var) {
         return new Number(0);
     }
+
+    @Override
+    public Expression simplify_h() {
+        return this;
+    }
+
 }

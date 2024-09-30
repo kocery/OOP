@@ -1,6 +1,7 @@
 package mathexp;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a variable in a mathematical expression. This class extends the abstract `Expression`
@@ -31,7 +32,7 @@ public final class Variable extends Expression {
         if (variables.containsKey(name)) {
             return variables.get(name);
         } else {
-            throw new IllegalArgumentException("Переменная " + name + " не найдена");
+            throw new IllegalArgumentException("Variable " + name + " not found.");
         }
     }
 
@@ -63,5 +64,34 @@ public final class Variable extends Expression {
     @Override
     protected Expression derivative_h(String var) {
         return name.equals(var) ? new Number(1) : new Number(0);
+    }
+
+    /**
+     * Cannot simplify the variable.
+     *
+     * @return this Variable.
+     */
+    @Override
+    public Expression simplify_h() {
+        return this;
+    }
+
+
+    /**
+     * Compares this variable with another object for equality. Two `Variable` objects are
+     * considered equal if they have the same name.
+     *
+     * @param obj the object to be compared for equality.
+     * @return true if the two variables have the same name, false otherwise.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Variable other)) {
+            return false;
+        }
+        return Objects.equals(this.name, other.name);
     }
 }

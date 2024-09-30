@@ -69,4 +69,29 @@ public final class Div extends Expression {
         return new Div(new Sub(new Mul(left.derivative_h(var), right),
             new Mul(left, right.derivative_h(var))), new Mul(left, left));
     }
+
+
+    /**
+     * Simplifies Div expression. If there is one in Div operator, it will return
+     * another part of Div expression.
+     *
+     * @return a new simplified `Div` expression.
+     */
+    @Override
+    public Expression simplify_h() {
+        Expression simplifiedLeft = left.simplify();
+        Expression simplifiedRight = right.simplify();
+
+        if (simplifiedRight instanceof Number && ((Number) simplifiedRight).getValue() == 1) {
+            return simplifiedLeft;
+        }
+
+        if (simplifiedLeft instanceof Number && simplifiedRight instanceof Number) {
+            int result =
+                ((Number) simplifiedLeft).getValue() / ((Number) simplifiedRight).getValue();
+            return new Number(result);
+        }
+
+        return new Div(simplifiedLeft, simplifiedRight);
+    }
 }

@@ -53,8 +53,8 @@ public final class Add extends Expression {
     }
 
     /**
-     * Computes the derivative of the addition expression.
-     * The derivative of a sum is the sum of the derivatives of the left and right expressions.
+     * Computes the derivative of the addition expression. The derivative of a sum is the sum of the
+     * derivatives of the left and right expressions.
      *
      * @param var the variable by which the derivative is taken.
      * @return a new `Add` expression representing the derivative of the addition.
@@ -62,5 +62,25 @@ public final class Add extends Expression {
     @Override
     protected Expression derivative_h(String var) {
         return new Add(left.derivative_h(var), right.derivative_h(var));
+    }
+
+    /**
+     * Simplifies Add expression. If there are two numbers in Add operator, it will return the
+     * result of the addition.
+     *
+     * @return a new simplified `Add` expression.
+     */
+    @Override
+    public Expression simplify_h() {
+        Expression simplifiedLeft = left.simplify();
+        Expression simplifiedRight = right.simplify();
+
+        if (simplifiedLeft instanceof Number && simplifiedRight instanceof Number) {
+            int result =
+                ((Number) simplifiedLeft).getValue() + ((Number) simplifiedRight).getValue();
+            return new Number(result);
+        }
+
+        return new Add(simplifiedLeft, simplifiedRight);
     }
 }

@@ -62,4 +62,30 @@ public final class Sub extends Expression {
     protected Expression derivative_h(String var) {
         return new Sub(left.derivative_h(var), right.derivative_h(var));
     }
+
+
+    /**
+     * Simplifies Sub expression. If there are two numbers in Sub operator, it will return the
+     * result of the subtraction. And if left and right expressions are equal, it will return 0.
+     *
+     * @return a new simplified `Sub` expression.
+     */
+    @Override
+    public Expression simplify_h() {
+        Expression simplifiedLeft = left.simplify();
+        Expression simplifiedRight = right.simplify();
+
+        if (simplifiedLeft.equals(simplifiedRight)) {
+            return new Number(0);
+        }
+
+        if (simplifiedLeft instanceof Number && simplifiedRight instanceof Number) {
+            int result =
+                ((Number) simplifiedLeft).getValue() - ((Number) simplifiedRight).getValue();
+            return new Number(result);
+        }
+
+        return new Sub(simplifiedLeft, simplifiedRight);
+    }
+
 }

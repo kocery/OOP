@@ -65,4 +65,37 @@ public final class Mul extends Expression {
         return new Add(new Mul(left.derivative_h(var), right),
             new Mul(left, right.derivative_h(var)));
     }
+
+    /**
+     * Simplifies Mul expression. If there is one in Mul operator, it will return another part of
+     * Mul expression. If there is one zero in Mul operator, it will return zero.
+     *
+     * @return a new simplified `Mul` expression.
+     */
+    @Override
+    public Expression simplify_h() {
+        Expression simplifiedLeft = left.simplify();
+        Expression simplifiedRight = right.simplify();
+
+        if ((simplifiedLeft instanceof Number && ((Number) simplifiedLeft).getValue() == 0) ||
+            (simplifiedRight instanceof Number && ((Number) simplifiedRight).getValue() == 0)) {
+            return new Number(0);
+        }
+
+        if (simplifiedLeft instanceof Number && ((Number) simplifiedLeft).getValue() == 1) {
+            return simplifiedRight;
+        }
+        if (simplifiedRight instanceof Number && ((Number) simplifiedRight).getValue() == 1) {
+            return simplifiedLeft;
+        }
+
+        if (simplifiedLeft instanceof Number && simplifiedRight instanceof Number) {
+            int result =
+                ((Number) simplifiedLeft).getValue() * ((Number) simplifiedRight).getValue();
+            return new Number(result);
+        }
+
+        return new Mul(simplifiedLeft, simplifiedRight);
+    }
+
 }

@@ -42,6 +42,23 @@ public sealed abstract class Expression
     protected abstract Expression derivative_h(String var);
 
     /**
+     * Help-function to simplify expression.
+     *
+     * @return the expression.
+     */
+    protected abstract Expression simplify_h();
+
+
+    /**
+     * Simplify expression.
+     *
+     * @return the expression.
+     */
+    public Expression simplify() {
+        return this.simplify_h();
+    }
+
+    /**
      * A public method to compute the derivative of the expression.
      *
      * @param var the variable with respect to which the derivative is taken.
@@ -82,7 +99,7 @@ public sealed abstract class Expression
                 int varValue = Integer.parseInt(matcher.group(2));
                 variables.put(varName, varValue);
             } else {
-                throw new IllegalArgumentException("Неверное присваивание переменной");
+                throw new IllegalArgumentException("Incorrect assignment of a variable.");
             }
         }
         return variables;

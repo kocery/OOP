@@ -25,7 +25,7 @@ class VariableTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             x.evaluate(variables);
         });
-        assertEquals("Переменная x не найдена", exception.getMessage());
+        assertEquals("Variable " + x + " not found.", exception.getMessage());
     }
 
     @Test
