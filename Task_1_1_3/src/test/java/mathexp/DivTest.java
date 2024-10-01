@@ -49,4 +49,20 @@ class DivTest {
         // Производная x / 2 по x = 1 / 2
         assertEquals("(((1*2)-(x*0))/(x*x))", divExpr.derivative("x").toString());
     }
+
+    @Test
+    void testSimplify() {
+        Div div = new Div(new Number(15), new Number(3));
+        Number result = new Number(15 / 3);
+
+        assertEquals(result.getValue(), ((Number) div.simplify()).getValue());
+    }
+
+    @Test
+    void testSimplifyRecursive() {
+        Div div = new Div(new Mul(new Number(5), new Number(3)), new Number(3));
+        Number result = new Number((5 * 3) / 3);
+
+        assertEquals(result.getValue(), ((Number) div.simplify()).getValue());
+    }
 }

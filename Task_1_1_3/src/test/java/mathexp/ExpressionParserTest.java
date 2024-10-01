@@ -120,4 +120,18 @@ public class ExpressionParserTest {
         Expression simplified = expr.simplify();
         assertEquals("0", simplified.toString());
     }
+
+    @Test
+    public void testSimplificationAndParseOfDifficultExpressions() {
+        Expression expr = parser.parse("x - 1 * 3 - 15 + y * 71 / 1");
+        Expression simplified = expr.simplify();
+        assertEquals("(((x-3)-15)+(y*71))", simplified.toString());
+    }
+
+    @Test
+    public void testParseOfDifficultExpressions() {
+        Expression expr = parser.parse("x - 1 * x - 15 + y * 71 / x");
+        Expression simplified = expr.simplify();
+        assertEquals("(-15+((y*71)/x))", simplified.toString());
+    }
 }

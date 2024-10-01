@@ -39,4 +39,20 @@ class MulTest {
         // Производная (x * 3) по x = 1 * 3 = 3
         assertEquals("((1*3)+(x*0))", mulExpr.derivative("x").toString());
     }
+
+    @Test
+    void testSimplify() {
+        Mul mul = new Mul(new Number(5), new Number(3));
+        Number result = new Number(5 * 3);
+
+        assertEquals(result.getValue(), ((Number) mul.simplify()).getValue());
+    }
+
+    @Test
+    void testSimplifyRecursive() {
+        Mul mul = new Mul(new Mul(new Number(5), new Number(3)), new Number(3));
+        Number result = new Number((5 * 3) * 3);
+
+        assertEquals(result.getValue(), ((Number) mul.simplify()).getValue());
+    }
 }
