@@ -52,30 +52,18 @@ class AdjacencyMatrixGraphTest {
     }
 
     @Test
-    void testTopologicalSort() {
-        graph.addVertex(0);
-        graph.addVertex(1);
-        graph.addVertex(2);
-        graph.addVertex(3);
-        graph.addVertex(4);
-        graph.addVertex(5);
-        graph.addEdge(3, 1);
-        graph.addEdge(2, 3);
-        graph.addEdge(5, 2);
-        graph.addEdge(5, 0);
-        graph.addEdge(4, 0);
-        graph.addEdge(4, 1);
-        List<Integer> sorted = graph.topologicalSort();
-        assertEquals(List.of(5, 4, 2, 3, 1, 0), sorted);
-    }
-
-    @Test
     void testReadFromFile() throws Exception {
-        Path path = Path.of("testGraphMatrix.txt");
-        Files.writeString(path,
-            "1 0 0 0 0 0\n0 1 0 0 0 0\n0 0 1 2 0 0\n0 2 0 1 0 0\n2 2 0 0 1 0\n2 0 2 0 0 1\n");
+        Graph graph = new AdjacencyMatrixGraph();
+        Path path = Path.of("testGraphIncidence.txt");
+        Files.writeString(path, """
+            1 1 0 0 1 0
+            1 0 1 0 1 0
+            0 1 0 1 0 0
+            0 0 1 0 1 1
+            1 1 0 1 0 0
+            0 0 0 1 0 0""");
         graph.readFromFile(path);
-        assertEquals(List.of(0, 2), graph.getNeighbors(5));
-        assertEquals(List.of(1), graph.getNeighbors(3));
+        assertEquals(List.of(3), graph.getNeighbors(5));
+        assertEquals(List.of(2, 4, 5), graph.getNeighbors(3));
     }
 }

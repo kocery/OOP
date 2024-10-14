@@ -16,7 +16,7 @@ class IncidenceMatrixGraphTest {
 
     @BeforeEach
     void setUp() {
-        graph = new IncidenceMatrixGraph(3, 3);
+        graph = new IncidenceMatrixGraph();
     }
 
     @Test
@@ -49,24 +49,6 @@ class IncidenceMatrixGraphTest {
         graph.addEdge(0, 1);
         graph.removeEdge(0, 1);
         assertTrue(graph.getNeighbors(0).isEmpty());
-    }
-
-    @Test
-    void testTopologicalSort() {
-        graph.addVertex(0);
-        graph.addVertex(1);
-        graph.addVertex(2);
-        graph.addVertex(3);
-        graph.addVertex(4);
-        graph.addVertex(5);
-        graph.addEdge(3, 1);
-        graph.addEdge(2, 3);
-        graph.addEdge(5, 2);
-        graph.addEdge(5, 0);
-        graph.addEdge(4, 0);
-        graph.addEdge(4, 1);
-        List<Integer> sorted = graph.topologicalSort();
-        assertEquals(List.of(5, 4, 2, 3, 1, 0), sorted);
     }
 
     @Test

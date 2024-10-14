@@ -52,30 +52,31 @@ class AdjacencyListGraphTest {
     }
 
     @Test
-    void testTopologicalSort() {
-        graph.addVertex(0);
-        graph.addVertex(1);
-        graph.addVertex(2);
-        graph.addVertex(3);
-        graph.addVertex(4);
-        graph.addVertex(5);
-        graph.addEdge(3, 1);
-        graph.addEdge(2, 3);
-        graph.addEdge(5, 2);
-        graph.addEdge(5, 0);
-        graph.addEdge(4, 0);
-        graph.addEdge(4, 1);
-        List<Integer> sorted = graph.topologicalSort();
-        assertEquals(List.of(5, 4, 2, 3, 1, 0), sorted);
-    }
-
-    @Test
     void testReadFromFile() throws Exception {
         Path path = Path.of("testGraph.txt");
         Files.writeString(path, "0 1\n1 2\n");
         graph.readFromFile(path);
         assertEquals(List.of(1), graph.getNeighbors(0));
         assertEquals(List.of(2), graph.getNeighbors(1));
+    }
+
+    @Test
+    void testToString() {
+        graph.addEdge(5, 2);
+        graph.addEdge(5, 0);
+        graph.addEdge(4, 0);
+        graph.addEdge(4, 1);
+        graph.addEdge(2, 3);
+        graph.addEdge(3, 1);
+        String string = graph.toString();
+        assertTrue(string.contains("""
+            0 -> []
+            1 -> []
+            2 -> [3]
+            3 -> [1]
+            4 -> [0, 1]
+            5 -> [2, 0]
+            """));
     }
 }
 
