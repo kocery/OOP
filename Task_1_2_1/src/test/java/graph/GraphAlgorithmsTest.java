@@ -71,9 +71,8 @@ public class GraphAlgorithmsTest {
         Graph graph = new AdjacencyListGraph();
         graph.addEdge(1, 2);
         graph.addEdge(2, 3);
-        graph.addEdge(3, 1); // This edge creates a cycle
+        graph.addEdge(3, 1);
 
-        // Assert that an IllegalArgumentException is thrown when attempting topological sort
         Exception exception = assertThrows(IllegalArgumentException.class,
             () -> GraphAlgorithms.topologicalSort(graph));
 

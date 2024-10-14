@@ -11,11 +11,10 @@ class GraphEqualsTest {
     @Test
     void testEqualsSameTypeGraphsEqual() {
         Graph graph1 = new AdjacencyMatrixGraph();
-        Graph graph2 = new AdjacencyMatrixGraph();
-
         graph1.addEdge(1, 2);
         graph1.addEdge(2, 3);
 
+        Graph graph2 = new AdjacencyMatrixGraph();
         graph2.addEdge(1, 2);
         graph2.addEdge(2, 3);
 
@@ -25,13 +24,11 @@ class GraphEqualsTest {
     @Test
     void testEqualsSameTypeGraphsNotEqual() {
         Graph graph1 = new AdjacencyMatrixGraph();
-        Graph graph2 = new AdjacencyMatrixGraph();
-
         graph1.addEdge(1, 2);
         graph1.addEdge(2, 3);
 
+        Graph graph2 = new AdjacencyMatrixGraph();
         graph2.addEdge(1, 2);
-        // graph2.addEdge(2, 3); // Оставляем это ребро не добавленным
 
         assertNotEquals(graph1, graph2, "Graphs with different edges should not be equal.");
     }
@@ -39,15 +36,14 @@ class GraphEqualsTest {
     @Test
     void testEqualsDifferentTypeGraphsEqual() {
         Graph graph1 = new AdjacencyMatrixGraph();
-        Graph graph2 = new AdjacencyListGraph();
-        Graph graph3 = new IncidenceMatrixGraph();
-
         graph1.addEdge(1, 2);
         graph1.addEdge(2, 3);
 
+        Graph graph2 = new AdjacencyListGraph();
         graph2.addEdge(1, 2);
         graph2.addEdge(2, 3);
 
+        Graph graph3 = new IncidenceMatrixGraph();
         graph3.addEdge(1, 2);
         graph3.addEdge(2, 3);
 
@@ -62,15 +58,14 @@ class GraphEqualsTest {
     @Test
     void testEqualsDifferentTypeGraphsNotEqual() {
         Graph graph1 = new AdjacencyMatrixGraph();
-        Graph graph2 = new AdjacencyListGraph();
-        Graph graph3 = new IncidenceMatrixGraph();
-
         graph1.addEdge(1, 2);
         graph1.addEdge(3, 4);
 
+        Graph graph2 = new AdjacencyListGraph();
         graph2.addEdge(1, 2);
         graph2.addEdge(2, 3);
 
+        Graph graph3 = new IncidenceMatrixGraph();
         graph3.addEdge(1, 2);
         graph3.addEdge(2, 4);
 
@@ -85,15 +80,16 @@ class GraphEqualsTest {
     @Test
     void testEqualsGraphsWithDifferentVertices() {
         Graph graph1 = new AdjacencyMatrixGraph();
-        Graph graph2 = new AdjacencyMatrixGraph();
-        Graph graph3 = new IncidenceMatrixGraph();
-
         graph1.addEdge(1, 2);
+
+        Graph graph2 = new AdjacencyMatrixGraph();
         graph2.addEdge(1, 2);
+
+        Graph graph3 = new IncidenceMatrixGraph();
         graph3.addEdge(1, 2);
 
         graph1.addVertex(3);
-        graph3.addVertex(4);// Добавляем дополнительную вершину в graph1
+        graph3.addVertex(4);
 
         assertNotEquals(graph1, graph2, "Graphs with different vertices should not be equal.");
         assertNotEquals(graph2, graph3, "Graphs with different vertices should not be equal.");
@@ -133,9 +129,9 @@ class GraphEqualsTest {
         Graph graph = new AdjacencyMatrixGraph();
         graph.addEdge(1, 2);
 
-        String notAGraph = "Not a graph";
+        String notGraph = "Not a graph";
 
-        assertNotEquals(graph, notAGraph,
+        assertNotEquals(graph, notGraph,
             "Graph should not be equal to an object of a different type.");
     }
 
