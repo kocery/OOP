@@ -66,4 +66,114 @@ class AdjacencyMatrixGraphTest {
         assertEquals(List.of(3), graph.getNeighbors(5));
         assertEquals(List.of(2, 4, 5), graph.getNeighbors(3));
     }
+
+    @Test
+    void testToString() throws Exception {
+        Path path = Path.of("testGraphIncidence.txt");
+        String matrix = """
+            1 1 0 0 1 0
+            1 0 1 0 1 0
+            0 1 0 1 0 0
+            0 0 1 0 1 1
+            1 1 0 1 0 0
+            0 0 0 1 0 0
+            """;
+        Files.writeString(path, matrix);
+        graph.readFromFile(path);
+        System.out.println(graph);
+        assertEquals(matrix, graph.toString());
+    }
+
+    @Test
+    void testIncreaseCapacity() {
+        AdjacencyMatrixGraph graph = new AdjacencyMatrixGraph();
+
+        int initialCapacity = 16;
+        int numberOfVerticesToAdd = 100;
+
+        for (int i = 0; i < numberOfVerticesToAdd; i++) {
+            graph.addVertex(i);
+        }
+
+        List<Integer> vertices = graph.getVertices();
+        assertEquals(numberOfVerticesToAdd, vertices.size(),
+            "All vertices should be added to the graph.");
+
+        for (int i = 0; i < numberOfVerticesToAdd; i++) {
+            assertTrue(vertices.contains(i), "Graph should contain vertex " + i);
+        }
+
+        for (int i = 0; i < numberOfVerticesToAdd - 1; i++) {
+            graph.addEdge(i, i + 1);
+        }
+
+        for (int i = 0; i < numberOfVerticesToAdd - 1; i++) {
+            List<Integer> neighbors = graph.getNeighbors(i);
+            assertEquals(1, neighbors.size(), "Vertex " + i + " should have one neighbor.");
+            assertEquals(i + 1, neighbors.get(0),
+                "Vertex " + i + " should be connected to vertex " + (i + 1));
+        }
+
+        int expectedCapacity = initialCapacity;
+        while (expectedCapacity < numberOfVerticesToAdd) {
+            expectedCapacity *= 2;
+        }
+        assertEquals(expectedCapacity, graph.getCapacity(),
+            "Graph capacity should have increased appropriately.");
+    }
+
+    @Test
+    void testDecreaseCapacity() {
+        AdjacencyMatrixGraph graph = new AdjacencyMatrixGraph();
+
+        int initialCapacity = 16;
+        int numberOfVerticesToAdd = 100;
+
+        for (int i = 0; i < numberOfVerticesToAdd; i++) {
+            graph.addVertex(i);
+        }
+
+        for (int i = 0; i < numberOfVerticesToAdd - 1; i++) {
+            graph.addEdge(i, i + 1);
+        }
+
+        int expectedCapacity = initialCapacity;
+        while (expectedCapacity < numberOfVerticesToAdd) {
+            expectedCapacity *= 2;
+        }
+        assertEquals(expectedCapacity, graph.getCapacity(),
+            "Capacity should have increased appropriately.");
+
+        int numberOfVerticesToRemove = (int) (numberOfVerticesToAdd - expectedCapacity / 4 + 1);
+        for (int i = 0; i < numberOfVerticesToRemove; i++) {
+            graph.removeVertex(i);
+        }
+
+        int expectedNewCapacity = expectedCapacity;
+        while (graph.getVertexCount() < expectedNewCapacity / 4
+            && expectedNewCapacity > initialCapacity) {
+            expectedNewCapacity /= 2;
+        }
+
+        assertEquals(expectedNewCapacity, graph.getCapacity(),
+            "Capacity should have decreased appropriately.");
+
+        List<Integer> vertices = graph.getVertices();
+        assertEquals(numberOfVerticesToAdd - numberOfVerticesToRemove, vertices.size(),
+            "Graph should have correct number of vertices after removal.");
+
+        for (int i = numberOfVerticesToRemove; i < numberOfVerticesToAdd; i++) {
+            assertTrue(vertices.contains(i), "Graph should still contain vertex " + i);
+        }
+
+        for (int i = numberOfVerticesToRemove; i < numberOfVerticesToAdd - 1; i++) {
+            List<Integer> neighbors = graph.getNeighbors(i);
+            assertEquals(1, neighbors.size(), "Vertex " + i + " should have one neighbor.");
+            assertEquals(i + 1, neighbors.get(0),
+                "Vertex " + i + " should be connected to vertex " + (i + 1));
+        }
+
+        List<Integer> neighbors = graph.getNeighbors(numberOfVerticesToAdd - 1);
+        assertEquals(0, neighbors.size(), "Last vertex should have no neighbors.");
+    }
 }

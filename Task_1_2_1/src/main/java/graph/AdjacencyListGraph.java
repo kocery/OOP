@@ -54,7 +54,12 @@ public class AdjacencyListGraph implements Graph {
 
     @Override
     public List<Integer> getNeighbors(int vertex) {
-        return adjacencyList.getOrDefault(vertex, new ArrayList<>());
+        List<Integer> neighbors = adjacencyList.get(vertex);
+        if (neighbors == null) {
+            throw new IllegalArgumentException(
+                "Vertex " + vertex + " does not exist in the graph.");
+        }
+        return new ArrayList<>(neighbors);
     }
 
     @Override
@@ -114,8 +119,11 @@ public class AdjacencyListGraph implements Graph {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<Integer, List<Integer>> entry : adjacencyList.entrySet()) {
-            sb.append(entry.getKey()).append(" -> ").append(entry.getValue()).append("\n");
+        for (Integer vertex : adjacencyList.keySet()) {
+            sb.append(vertex).append(" -> ");
+            List<Integer> neighbors = adjacencyList.get(vertex);
+            sb.append(neighbors);
+            sb.append("\n");
         }
         return sb.toString();
     }

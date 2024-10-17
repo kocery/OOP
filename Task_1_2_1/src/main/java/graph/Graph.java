@@ -43,10 +43,16 @@ public interface Graph {
     void removeEdge(int fromVertex, int toVertex);
 
     /**
-     * Returns a list of all neighbors of a given vertex.
+     * Returns a list of neighbors of the specified vertex. The neighbors are the vertices
+     * that are directly reachable from the specified vertex via outgoing edges.
      *
-     * @param vertex the vertex whose neighbors are to be returned.
-     * @return a list of neighbors of the given vertex.
+     * <p>If the specified vertex does not exist in the graph, this method throws an
+     * {@code IllegalArgumentException}. Implementations must ensure that this behavior
+     * is consistent across all graph types.</p>
+     *
+     * @param vertex the vertex whose neighbors are to be returned
+     * @return a list of neighboring vertices
+     * @throws IllegalArgumentException if the vertex does not exist in the graph
      */
     List<Integer> getNeighbors(int vertex);
 

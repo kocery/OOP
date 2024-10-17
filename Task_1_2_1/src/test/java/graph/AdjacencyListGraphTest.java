@@ -68,15 +68,15 @@ class AdjacencyListGraphTest {
         graph.addEdge(4, 1);
         graph.addEdge(2, 3);
         graph.addEdge(3, 1);
-        String string = graph.toString();
-        assertTrue(string.contains("""
+        String ans = """
             0 -> []
             1 -> []
             2 -> [3]
             3 -> [1]
             4 -> [0, 1]
             5 -> [2, 0]
-            """));
+            """;
+        assertEquals(ans, graph.toString());
     }
 }
 

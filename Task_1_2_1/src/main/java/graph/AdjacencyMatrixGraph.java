@@ -67,6 +67,15 @@ public class AdjacencyMatrixGraph implements Graph {
     }
 
     /**
+     * Returns vertexCount of the graph.
+     *
+     * @return vertexCount of the graph.
+     */
+    public int getVertexCount() {
+        return vertexCount;
+    }
+
+    /**
      * Halves the capacity of the adjacency matrix to save memory when the number of vertices
      * decreases significantly. This method is called when the number of vertices is less than a
      * quarter of the current capacity.
@@ -152,7 +161,8 @@ public class AdjacencyMatrixGraph implements Graph {
     public List<Integer> getNeighbors(int vertex) {
         Integer idx = vertexIndexMap.get(vertex);
         if (idx == null) {
-            throw new IllegalArgumentException("Вершина не найдена");
+            throw new IllegalArgumentException(
+                "Vertex " + vertex + " does not exist in the graph.");
         }
         List<Integer> neighbors = new ArrayList<>();
         for (int i = 0; i < vertexCount; i++) {
@@ -162,6 +172,7 @@ public class AdjacencyMatrixGraph implements Graph {
         }
         return neighbors;
     }
+
 
     @Override
     public List<Integer> getVertices() {
@@ -242,16 +253,26 @@ public class AdjacencyMatrixGraph implements Graph {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Матрица смежности:\n");
-        for (int i = 0; i < vertexCount; i++) {
-            sb.append(indexVertexMap.get(i)).append(": ");
-            for (int j = 0; j < vertexCount; j++) {
-                if (adjacencyMatrix[i][j]) {
-                    sb.append(indexVertexMap.get(j)).append(" ");
+        int size = vertexCount;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                boolean hasEdge = adjacencyMatrix[i][j];
+                sb.append(hasEdge ? "1" : "0");
+                if (j < size - 1) {
+                    sb.append(" ");
                 }
             }
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    /**
+     * Returns capacity of the graph.
+     *
+     * @return capacity of the graph.
+     */
+    public int getCapacity() {
+        return capacity;
     }
 }

@@ -4,143 +4,139 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 
 /**
- * {@code IncidenceMatrixGraph} represents a directed graph using an incidence matrix.
- * The graph allows adding and removing vertices and edges, as well as retrieving neighbors for a given vertex.
+ * {@code IncidenceMatrixGraph} represents a directed graph using an incidence matrix. The graph
+ * allows adding and removing vertices and edges, as well as retrieving neighbors for a given
+ * vertex.
  */
 public class IncidenceMatrixGraph implements Graph {
 
     private int[][] incidenceMatrix;
-    private Map<Integer, Integer> vertexToIndex;
-    private Map<Integer, Integer> indexToVertex;
-    private List<Edge> edges;
+    private boolean[] vertexExists;
+    private int vertexCapacity;
+    private int edgeCapacity;
+    private int vertexCount;
+    private int edgeCount;
+    private int maxVertexIndex;
 
     /**
      * Constructs an empty graph using an incidence matrix.
      */
     public IncidenceMatrixGraph() {
-        this.vertexToIndex = new HashMap<>();
-        this.indexToVertex = new HashMap<>();
-        this.edges = new ArrayList<>();
-        this.incidenceMatrix = new int[0][0];
+        this.vertexCapacity = 16;
+        this.edgeCapacity = 16;
+        this.incidenceMatrix = new int[vertexCapacity][edgeCapacity];
+        this.vertexExists = new boolean[vertexCapacity];
+        this.vertexCount = 0;
+        this.edgeCount = 0;
+        this.maxVertexIndex = -1;
     }
 
     @Override
     public void addVertex(int vertex) {
-        if (vertexToIndex.containsKey(vertex)) {
-            return;
+        if (vertex >= vertexCapacity) {
+            resizeVertexCapacity(vertex);
         }
-        int index = vertexToIndex.size();
-        vertexToIndex.put(vertex, index);
-        indexToVertex.put(index, vertex);
-
-        // Расширяем матрицу инцидентности
-        int vertexCount = vertexToIndex.size();
-        int edgeCount = edges.size();
-
-        int[][] newMatrix = new int[vertexCount][edgeCount];
-        for (int i = 0; i < vertexCount - 1; i++) {
-            System.arraycopy(incidenceMatrix[i], 0, newMatrix[i], 0, edgeCount);
+        if (!vertexExists[vertex]) {
+            vertexExists[vertex] = true;
+            vertexCount++;
+            maxVertexIndex = Math.max(maxVertexIndex, vertex);
         }
-        incidenceMatrix = newMatrix;
     }
 
     @Override
     public void removeVertex(int vertex) {
-        Integer idx = vertexToIndex.get(vertex);
-        if (idx == null) {
+        if (vertex < 0 || vertex >= vertexCapacity || !vertexExists[vertex]) {
             return;
         }
-        vertexToIndex.remove(vertex);
-        indexToVertex.remove(idx);
+        vertexExists[vertex] = false;
+        vertexCount--;
 
-        // Обновляем индексы оставшихся вершин
-        Map<Integer, Integer> newVertexToIndex = new HashMap<>();
-        Map<Integer, Integer> newIndexToVertex = new HashMap<>();
-        int newIndex = 0;
-        for (Map.Entry<Integer, Integer> entry : vertexToIndex.entrySet()) {
-            int v = entry.getKey();
-            if (entry.getValue() > idx) {
-                newVertexToIndex.put(v, newIndex);
-                newIndexToVertex.put(newIndex, v);
-                newIndex++;
-            } else {
-                newVertexToIndex.put(v, entry.getValue());
-                newIndexToVertex.put(entry.getValue(), v);
+        for (int i = 0; i < edgeCount; i++) {
+            if (incidenceMatrix[vertex][i] != 0) {
+                for (int v = 0; v < vertexCapacity; v++) {
+                    incidenceMatrix[v][i] = 0;
+                }
             }
         }
-        vertexToIndex = newVertexToIndex;
-        indexToVertex = newIndexToVertex;
 
-        // Удаляем связанные ребра
-        edges.removeIf(edge -> edge.from == vertex || edge.to == vertex);
-
-        rebuildIncidenceMatrix();
+        if (vertex == maxVertexIndex) {
+            maxVertexIndex = -1;
+            for (int i = vertexCapacity - 1; i >= 0; i--) {
+                if (vertexExists[i]) {
+                    maxVertexIndex = i;
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     public void addEdge(int fromVertex, int toVertex) {
-        if (!vertexToIndex.containsKey(fromVertex)) {
-            addVertex(fromVertex);
+        // Ensure both vertices exist
+        addVertex(fromVertex);
+        addVertex(toVertex);
+
+        if (edgeCount == edgeCapacity) {
+            resizeEdgeCapacity();
         }
-        if (!vertexToIndex.containsKey(toVertex)) {
-            addVertex(toVertex);
-        }
-        Edge edge = new Edge(fromVertex, toVertex);
-        if (edges.contains(edge)) {
-            return;
-        }
-        edges.add(edge);
-        rebuildIncidenceMatrix();
+
+        incidenceMatrix[fromVertex][edgeCount] = 1;   // Edge starts from fromVertex
+        incidenceMatrix[toVertex][edgeCount] = -1;    // Edge ends at toVertex
+        edgeCount++;
     }
 
     @Override
     public void removeEdge(int fromVertex, int toVertex) {
-        Edge edge = new Edge(fromVertex, toVertex);
-        edges.remove(edge);
-        rebuildIncidenceMatrix();
-    }
-
-    /**
-     * Rebuilds the incidence matrix after changes in the list of vertices or edges. This method
-     * updates the incidence matrix to reflect the current state of the graph.
-     */
-    private void rebuildIncidenceMatrix() {
-        int vertexCount = vertexToIndex.size();
-        int edgeCount = edges.size();
-        incidenceMatrix = new int[vertexCount][edgeCount];
-        for (int e = 0; e < edgeCount; e++) {
-            Edge edge = edges.get(e);
-            int fromIdx = vertexToIndex.get(edge.from);
-            int toIdx = vertexToIndex.get(edge.to);
-            incidenceMatrix[fromIdx][e] = 1;
-            incidenceMatrix[toIdx][e] = 2;
+        if (!vertexExists(fromVertex) || !vertexExists(toVertex)) {
+            return;
         }
+
+        // Find the edge index
+        int edgeIndex = -1;
+        for (int i = 0; i < edgeCount; i++) {
+            if (incidenceMatrix[fromVertex][i] == 1 && incidenceMatrix[toVertex][i] == -1) {
+                edgeIndex = i;
+                break;
+            }
+        }
+
+        if (edgeIndex == -1) {
+            return;
+        }
+
+        // Remove edge by shifting edges in the incidence matrix
+        for (int v = 0; v < vertexCapacity; v++) {
+            System.arraycopy(incidenceMatrix[v], edgeIndex + 1, incidenceMatrix[v], edgeIndex,
+                edgeCount - edgeIndex - 1);
+            incidenceMatrix[v][edgeCount - 1] = 0; // Clear the last edge slot
+        }
+        edgeCount--;
     }
 
     @Override
     public List<Integer> getNeighbors(int vertex) {
-        List<Integer> neighbors = new ArrayList<>();
-
-        Integer vertexIdx = vertexToIndex.get(vertex);
-        if (vertexIdx == null) {
-            return neighbors;
+        if (!vertexExists(vertex)) {
+            throw new IllegalArgumentException(
+                "Vertex " + vertex + " does not exist in the graph.");
         }
-
-        int edgeCount = edges.size();
-        for (int edgeIdx = 0; edgeIdx < edgeCount; edgeIdx++) {
-            if (incidenceMatrix[vertexIdx][edgeIdx] == 1) {
-                for (int v = 0; v < vertexToIndex.size(); v++) {
-                    if (incidenceMatrix[v][edgeIdx] == 2) {
-                        neighbors.add(indexToVertex.get(v));
+        List<Integer> neighbors = new ArrayList<>();
+        for (int i = 0; i < edgeCount; i++) {
+            if (incidenceMatrix[vertex][i] == 1) {
+                for (int v = 0; v < vertexCapacity; v++) {
+                    if (!vertexExists[v]) {
+                        continue;
+                    }
+                    if (incidenceMatrix[v][i] == -1) {
+                        neighbors.add(v);
+                        break;
                     }
                 }
             }
@@ -150,41 +146,44 @@ public class IncidenceMatrixGraph implements Graph {
 
     @Override
     public List<Integer> getVertices() {
-        return new ArrayList<>(vertexToIndex.keySet());
+        List<Integer> vertices = new ArrayList<>();
+        for (int i = 0; i <= maxVertexIndex; i++) {
+            if (vertexExists[i]) {
+                vertices.add(i);
+            }
+        }
+        return vertices;
     }
 
     @Override
     public void readFromFile(Path path) throws IOException {
         List<String> lines = Files.readAllLines(path);
-        int vertexCount = lines.size();
-        int edgeCount = lines.getFirst().trim().split("\\s+").length;
 
-        incidenceMatrix = new int[vertexCount][edgeCount];
-        vertexToIndex = new HashMap<>();
-        indexToVertex = new HashMap<>();
+        int vertexCountInFile = lines.size();
+        int edgeCountInFile = lines.getFirst().trim().split("\\s+").length;
 
-        for (int i = 0; i < vertexCount; i++) {
-            vertexToIndex.put(i, i);
-            indexToVertex.put(i, i);
-            String[] line = lines.get(i).trim().split("\\s+");
-            for (int j = 0; j < edgeCount; j++) {
-                incidenceMatrix[i][j] = Integer.parseInt(line[j]);
-            }
+        // Reset graph data
+        this.vertexCapacity = Math.max(vertexCapacity, vertexCountInFile);
+        this.edgeCapacity = Math.max(edgeCapacity, edgeCountInFile);
+        this.incidenceMatrix = new int[vertexCapacity][edgeCapacity];
+        this.vertexExists = new boolean[vertexCapacity];
+        this.vertexCount = vertexCountInFile;
+        this.edgeCount = edgeCountInFile;
+        this.maxVertexIndex = vertexCountInFile - 1;
+
+        // Initialize vertex existence
+        for (int i = 0; i < vertexCountInFile; i++) {
+            vertexExists[i] = true;
         }
 
-        edges = new ArrayList<>();
-        for (int j = 0; j < edgeCount; j++) {
-            int from = -1;
-            int to = -1;
-            for (int i = 0; i < vertexCount; i++) {
-                if (incidenceMatrix[i][j] == 1) {
-                    from = indexToVertex.get(i);
-                } else if (incidenceMatrix[i][j] == 2) {
-                    to = indexToVertex.get(i);
-                }
+        // Read the incidence matrix from the file
+        for (int i = 0; i < vertexCountInFile; i++) {
+            String[] tokens = lines.get(i).trim().split("\\s+");
+            if (tokens.length != edgeCountInFile) {
+                throw new IOException("Invalid incidence matrix format at line " + (i + 1));
             }
-            if (from != -1 && to != -1) {
-                edges.add(new Edge(from, to));
+            for (int j = 0; j < edgeCountInFile; j++) {
+                incidenceMatrix[i][j] = Integer.parseInt(tokens[j]);
             }
         }
     }
@@ -192,22 +191,43 @@ public class IncidenceMatrixGraph implements Graph {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        int vertexCount = vertexToIndex.size();
-        int edgeCount = edges.size();
-        for (int i = 0; i < vertexCount; i++) {
+        int edgeCount = this.edgeCount;
+
+        for (int i = 0; i < vertexCapacity; i++) {
+            if (!vertexExists[i]) {
+                continue;
+            }
             for (int j = 0; j < edgeCount; j++) {
-                sb.append(incidenceMatrix[i][j]).append(" ");
+                sb.append(incidenceMatrix[i][j]);
+                if (j < edgeCount - 1) {
+                    sb.append(" ");
+                }
             }
             sb.append("\n");
         }
         return sb.toString();
     }
 
+
     @Override
     public Set<Edge> getEdges() {
         Set<Edge> edgeSet = new HashSet<>();
-        for (Edge edge : edges) {
-            edgeSet.add(new Edge(edge.from, edge.to));
+        for (int i = 0; i < edgeCount; i++) {
+            int from = -1;
+            int to = -1;
+            for (int v = 0; v < vertexCapacity; v++) {
+                if (incidenceMatrix[v][i] == 1) {
+                    from = v;
+                } else if (incidenceMatrix[v][i] == -1) {
+                    to = v;
+                }
+                if (from != -1 && to != -1) {
+                    break;
+                }
+            }
+            if (from != -1 && to != -1) {
+                edgeSet.add(new Edge(from, to));
+            }
         }
         return edgeSet;
     }
@@ -235,8 +255,67 @@ public class IncidenceMatrixGraph implements Graph {
 
     @Override
     public int hashCode() {
-        Set<Integer> vertices = new HashSet<>(this.getVertices());
-        Set<Edge> edges = this.getEdges();
-        return Objects.hash(vertices, edges);
+        Set<Integer> verticesSet = new HashSet<>(this.getVertices());
+        Set<Edge> edgesSet = this.getEdges();
+        return Objects.hash(verticesSet, edgesSet);
+    }
+
+    /**
+     * Checks if a vertex exists in the graph.
+     *
+     * @param vertex the vertex to check
+     * @return {@code true} if the vertex exists; {@code false} otherwise
+     */
+    private boolean vertexExists(int vertex) {
+        return vertex >= 0 && vertex < vertexCapacity && vertexExists[vertex];
+    }
+
+    /**
+     * Resizes the vertex capacity to accommodate new vertices.
+     *
+     * @param vertex the vertex index that exceeds the current capacity
+     */
+    private void resizeVertexCapacity(int vertex) {
+        while (vertex >= vertexCapacity) {
+            vertexCapacity *= 2;
+        }
+        int[][] newIncidenceMatrix = new int[vertexCapacity][edgeCapacity];
+        for (int i = 0; i < incidenceMatrix.length; i++) {
+            System.arraycopy(incidenceMatrix[i], 0, newIncidenceMatrix[i], 0,
+                incidenceMatrix[i].length);
+        }
+        incidenceMatrix = newIncidenceMatrix;
+
+        boolean[] newVertexExists = new boolean[vertexCapacity];
+        System.arraycopy(vertexExists, 0, newVertexExists, 0, vertexExists.length);
+        vertexExists = newVertexExists;
+    }
+
+    /**
+     * Resizes the edge capacity to accommodate new edges.
+     */
+    private void resizeEdgeCapacity() {
+        edgeCapacity *= 2;
+        for (int i = 0; i < vertexCapacity; i++) {
+            incidenceMatrix[i] = Arrays.copyOf(incidenceMatrix[i], edgeCapacity);
+        }
+    }
+
+    /**
+     * Returns vertexCapacity.
+     *
+     * @return vertexCapacity.
+     */
+    public int getVertexCapacity() {
+        return vertexCapacity;
+    }
+
+    /**
+     * Returns edgeCapacity.
+     *
+     * @return edgeCapacity.
+     */
+    public int getEdgeCapacity() {
+        return edgeCapacity;
     }
 }
