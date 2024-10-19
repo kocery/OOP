@@ -172,4 +172,63 @@ public class HashTableTest {
 
         assertThrows(NoSuchElementException.class, iterator::next);
     }
+
+    @Test
+    public void testNullKeysAndValues() {
+        hashTable.put(null, 100);
+        hashTable.put("NullValue", null);
+
+        assertEquals(100, hashTable.get(null));
+        assertNull(hashTable.get("NullValue"));
+
+        hashTable.update(null, 200);
+        assertEquals(200, hashTable.get(null));
+
+        assertTrue(hashTable.containsKey(null));
+        assertTrue(hashTable.containsKey("NullValue"));
+
+        hashTable.remove(null);
+        assertNull(hashTable.get(null));
+    }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        HashTable<String, Integer> otherTable = new HashTable<>();
+        otherTable.put("Key2", 2);
+        otherTable.put("Key1", 1);
+
+        hashTable.put("Key1", 1);
+        hashTable.put("Key2", 2);
+
+        assertEquals(hashTable, otherTable);
+        assertEquals(hashTable.hashCode(), otherTable.hashCode());
+
+        otherTable.put("Key3", 3);
+        assertNotEquals(hashTable, otherTable);
+        assertNotEquals(hashTable.hashCode(), otherTable.hashCode());
+    }
+
+    /**
+     * Tests the equals and hashCode methods of the Entry class.
+     */
+    @Test
+    public void testEntryEqualsAndHashCode() {
+        HashTable.Entry<String, Integer> entry1 = new HashTable.Entry<>("Key", 1, null);
+        HashTable.Entry<String, Integer> entry2 = new HashTable.Entry<>("Key", 1, null);
+        assertEquals(entry1, entry2);
+        assertEquals(entry1.hashCode(), entry2.hashCode());
+
+        HashTable.Entry<String, Integer> entry3 = new HashTable.Entry<>("Key", 2, null);
+        HashTable.Entry<String, Integer> entry4 = new HashTable.Entry<>("AnotherKey", 1, null);
+        assertNotEquals(entry1, entry3);
+        assertNotEquals(entry1.hashCode(), entry3.hashCode());
+        assertNotEquals(entry1, entry4);
+        assertNotEquals(entry1.hashCode(), entry4.hashCode());
+
+        HashTable.Entry<String, Integer> entry5 = new HashTable.Entry<>(null, null, null);
+        HashTable.Entry<String, Integer> entry6 = new HashTable.Entry<>(null, null, null);
+        assertEquals(entry5, entry6);
+        assertEquals(entry5.hashCode(), entry6.hashCode());
+        assertNotEquals(entry1, entry5);
+    }
 }

@@ -72,6 +72,33 @@ public class HashTable<K, V> implements Iterable<HashTable.Entry<K, V>> {
         public String toString() {
             return key + "=" + value;
         }
+
+        /**
+         * Compares the specified object with this entry for equality.
+         *
+         * @param o object to be compared for equality with this entry.
+         * @return {@code true} if the specified object is equal to this entry.
+         */
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Entry<?, ?> other)) {
+                return false;
+            }
+            return Objects.equals(key, other.key) && Objects.equals(value, other.value);
+        }
+
+        /**
+         * Returns the hash code value for this entry.
+         *
+         * @return the hash code value for this entry.
+         */
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(key) ^ Objects.hashCode(value);
+        }
     }
 
     /**
@@ -99,10 +126,13 @@ public class HashTable<K, V> implements Iterable<HashTable.Entry<K, V>> {
      * @param value the value.
      */
     public void put(K key, V value) {
+        if (size + 1 >= capacity * LOAD_FACTOR) {
+            resize();
+        }
+
         int index = hashKey(key);
         Entry<K, V> head = table[index];
 
-        // Update value if key already exists
         for (Entry<K, V> curr = head; curr != null; curr = curr.next) {
             if (Objects.equals(curr.key, key)) {
                 curr.value = value;
@@ -114,10 +144,6 @@ public class HashTable<K, V> implements Iterable<HashTable.Entry<K, V>> {
         table[index] = newEntry;
         size++;
         modCount++;
-
-        if (size >= capacity * LOAD_FACTOR) {
-            resize();
-        }
     }
 
     /**
@@ -190,7 +216,13 @@ public class HashTable<K, V> implements Iterable<HashTable.Entry<K, V>> {
      * @return {@code true} if the key exists, {@code false} otherwise.
      */
     public boolean containsKey(Object key) {
-        return get(key) != null;
+        int index = hashKey(key);
+        for (Entry<K, V> curr = table[index]; curr != null; curr = curr.next) {
+            if (Objects.equals(curr.key, key)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -248,6 +280,20 @@ public class HashTable<K, V> implements Iterable<HashTable.Entry<K, V>> {
             }
         }
         return true;
+    }
+
+    /**
+     * Returns the hash code value for this hash table.
+     *
+     * @return the hash code value for this hash table.
+     */
+    @Override
+    public int hashCode() {
+        int h = 0;
+        for (Entry<K, V> entry : this) {
+            h += entry.hashCode();
+        }
+        return h;
     }
 
     /**
