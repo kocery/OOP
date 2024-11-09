@@ -31,6 +31,7 @@ application {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+    jvmArgs("-Xmx256m")
 }
 
 tasks.jacocoTestReport {

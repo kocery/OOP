@@ -26,6 +26,9 @@ public class SubstringFinder {
      */
     public static List<Long> findSubstringOccurrences(String filename, String substring)
         throws IOException {
+        if (substring.isEmpty()) {
+            return new ArrayList<>();
+        }
         // Convert the substring to an array of Unicode code points
         int[] pattern = substring.codePoints().toArray();
         int patternLength = pattern.length;
